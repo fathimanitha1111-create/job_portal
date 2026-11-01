@@ -1,0 +1,168 @@
+{% extends 'jobs/base.html' %}
+{% load static %}
+
+{% block title %}Edit Job: {{ job.title }} | CareerConnect{% endblock %}
+
+{% block page_css %}
+  <link rel="stylesheet" href="{% static 'css/edit_job.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="bg-white border-b border-slate-200 py-6">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-xs text-slate-400 mb-1">
+      <a href="{% url 'employer_dashboard' %}" class="hover:underline">Dashboard</a> &gt; <span>Edit Job</span>
+    </div>
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-2xl font-extrabold text-navy-900">Edit Job: {{ job.title }}</h1>
+        <p class="text-xs text-slate-500 mt-0.5">Posting for <strong>{{ company.name }}</strong></p>
+      </div>
+      <a href="{% url 'job_details' slug=job.slug %}" class="btn-outline text-xs py-1.5 px-3" target="_blank">
+        View Live Listing &rarr;
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+  <div class="card-modern p-6 sm:p-10 shadow-lg">
+    
+    <form method="POST" class="space-y-8">
+      {% csrf_token %}
+
+      {% if form.errors %}
+        <div class="p-3 rounded-lg bg-rose-50 border border-rose-200 text-xs text-rose-700">
+          Please resolve the errors highlighted below.
+        </div>
+      {% endif %}
+
+      <!-- Section 1 -->
+      <div>
+        <h2 class="text-base font-bold text-navy-900 pb-3 border-b border-slate-200 mb-4">1. Primary Information</h2>
+        <div class="space-y-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">Job Title <span class="text-rose-500">*</span></label>
+            {{ form.title }}
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold text-slate-600 mb-1">Category <span class="text-rose-500">*</span></label>
+              {{ form.category }}
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-600 mb-1">Employment Type <span class="text-rose-500">*</span></label>
+              {{ form.job_type }}
+            </div>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold text-slate-600 mb-1">Seniority Level <span class="text-rose-500">*</span></label>
+              {{ form.experience_level }}
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-600 mb-1">Location <span class="text-rose-500">*</span></label>
+              {{ form.location }}
+            </div>
+          </div>
+          <div class="p-3 rounded-lg bg-slate-50 border border-slate-200 flex items-center justify-between">
+            <label for="id_is_remote" class="text-xs font-bold text-slate-700 cursor-pointer">
+              100% Remote or Remote-Friendly
+            </label>
+            {{ form.is_remote }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 2 -->
+      <div>
+        <h2 class="text-base font-bold text-navy-900 pb-3 border-b border-slate-200 mb-4">2. Compensation & Timeline</h2>
+        <div class="space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div>
+              <label class="block text-xs font-bold text-slate-600 mb-1">Min Salary</label>
+              {{ form.salary_min }}
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-600 mb-1">Max Salary</label>
+              {{ form.salary_max }}
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-600 mb-1">Currency</label>
+              {{ form.salary_currency }}
+            </div>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold text-slate-600 mb-1">Open Positions</label>
+              {{ form.open_positions }}
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-600 mb-1">Deadline</label>
+              {{ form.deadline }}
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            {{ form.salary_negotiable }}
+            <label for="id_salary_negotiable" class="text-xs text-slate-600 cursor-pointer">Salary is negotiable</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 3 -->
+      <div>
+        <h2 class="text-base font-bold text-navy-900 pb-3 border-b border-slate-200 mb-4">3. Description & Content</h2>
+        <div class="space-y-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">Overview & Role Summary <span class="text-rose-500">*</span></label>
+            {{ form.description }}
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">Requirements & Qualifications <span class="text-rose-500">*</span></label>
+            {{ form.requirements }}
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">Responsibilities</label>
+            {{ form.responsibilities }}
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">Perks & Benefits</label>
+            {{ form.benefits }}
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">Skills Required</label>
+            {{ form.skills_required }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 4 -->
+      <div>
+        <h2 class="text-base font-bold text-navy-900 pb-3 border-b border-slate-200 mb-4">4. Status & Visibility</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="p-3 rounded-lg bg-slate-50 border border-slate-200 flex items-center justify-between">
+            <label for="id_is_featured" class="text-xs font-bold text-slate-700 cursor-pointer">Feature on Homepage</label>
+            {{ form.is_featured }}
+          </div>
+          <div class="p-3 rounded-lg bg-slate-50 border border-slate-200 flex items-center justify-between">
+            <label for="id_is_active" class="text-xs font-bold text-slate-700 cursor-pointer">Active Listing</label>
+            {{ form.is_active }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Action buttons -->
+      <div class="pt-6 border-t border-slate-200 flex items-center justify-between gap-4">
+        <a href="{% url 'employer_dashboard' %}" class="btn-secondary text-xs py-2.5 px-4">
+          Cancel
+        </a>
+        <button type="submit" class="btn-primary py-2.5 px-6 text-sm font-bold shadow-md">
+          Save Job Changes
+        </button>
+      </div>
+
+    </form>
+
+  </div>
+</div>
+{% endblock %}

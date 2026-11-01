@@ -1,0 +1,70 @@
+/* My Applications Page Stylesheet */
+.timeline-stepper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  margin: 1.25rem 0 0.5rem 0;
+}
+
+.timeline-stepper::before {
+  content: '';
+  position: absolute;
+  top: 14px;
+  left: 15px;
+  right: 15px;
+  height: 2px;
+  background-color: var(--slate-200);
+  z-index: 1;
+}
+
+.timeline-step {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+.timeline-circle {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  border: 2px solid var(--slate-300);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--slate-500);
+}
+
+.timeline-step.completed .timeline-circle {
+  background-color: #10b981;
+  border-color: #10b981;
+  color: #ffffff;
+}
+
+.timeline-step.active .timeline-circle {
+  background-color: var(--navy-800);
+  border-color: var(--navy-800);
+  color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(16, 42, 67, 0.15);
+}
+
+.timeline-step.rejected .timeline-circle {
+  background-color: #e11d48;
+  border-color: #e11d48;
+  color: #ffffff;
+}
+
+.timeline-label {
+  display: block;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  margin-top: 0.35rem;
+  color: var(--slate-500);
+}
+
+.timeline-step.active .timeline-label {
+  color: var(--navy-800);
+}

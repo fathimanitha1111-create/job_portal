@@ -1,0 +1,262 @@
+{% extends 'jobs/base.html' %}
+{% load static %}
+
+{% block title %}All Jobs & Career Opportunities | CareerConnect{% endblock %}
+
+{% block page_css %}
+  <link rel="stylesheet" href="{% static 'css/all_jobs.css' %}">
+{% endblock %}
+
+{% block content %}
+<!-- PAGE HEADER BAR -->
+<div class="bg-white border-b border-slate-200 py-6">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+      <div>
+        <div class="text-xs text-slate-400 mb-1">
+          <a href="{% url 'home' %}" class="hover:underline">Home</a> &gt; <span>All Jobs</span>
+        </div>
+        <h1 class="text-2xl sm:text-3xl font-extrabold text-navy-900">Explore Career Openings</h1>
+        <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Showing {{ page_obj.paginator.count }} available job openings</p>
+      </div>
+
+      <!-- Reset Filters Pill if active -->
+      {% if query or selected_location or selected_category or selected_type or selected_remote or selected_min_salary %}
+        <div>
+          <a href="{% url 'all_jobs' %}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-rose-50 text-rose-700 text-xs font-semibold border border-rose-200 hover:bg-rose-100 transition">
+            <span>Reset Active Filters</span> &times;
+          </a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<!-- MAIN SEARCH & FILTER CONTENT -->
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+    <!-- FILTER SIDEBAR (4 cols) -->
+    <aside class="lg:col-span-4 filter-sticky-sidebar">
+      <div class="card-modern p-6">
+        <div class="flex items-center justify-between mb-5 pb-3 border-b border-slate-200">
+          <h2 class="text-base font-bold text-navy-900 flex items-center gap-2">
+            <svg class="w-4 h-4 text-accent-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path></svg>
+            Filter Openings
+          </h2>
+          <a href="{% url 'all_jobs' %}" class="text-xs text-slate-400 hover:text-navy-800 font-semibold">Clear</a>
+        </div>
+
+        <form action="{% url 'all_jobs' %}" method="GET" class="space-y-4">
+          <!-- Keyword -->
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1.5">Job Title or Keyword</label>
+            <input type="text" name="q" value="{{ query }}" class="form-input" placeholder="e.g. Python, UI Designer...">
+          </div>
+
+          <!-- Location -->
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1.5">Location</label>
+            <input type="text" name="location" value="{{ selected_location }}" class="form-input" placeholder="City or Country">
+          </div>
+
+          <!-- Remote Only Checkbox -->
+          <div class="p-3 rounded-lg bg-slate-50 border border-slate-200 flex items-center justify-between">
+            <label for="remoteCheck" class="text-xs font-bold text-slate-700 cursor-pointer flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+              Remote Roles Only
+            </label>
+            <input type="checkbox" name="remote" value="1" id="remoteCheck" class="form-checkbox" {% if selected_remote == '1' %}checked{% endif %}>
+          </div>
+
+          <!-- Category -->
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1.5">Domain / Category</label>
+            <select name="category" class="form-select">
+              <option value="">All Categories</option>
+              {% for cat in all_categories %}
+                <option value="{{ cat.slug }}" {% if selected_category == cat.slug %}selected{% endif %}>
+                  {{ cat.name }} ({{ cat.active_jobs_count }})
+                </option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <!-- Employment Type -->
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1.5">Job Type</label>
+            <select name="type" class="form-select">
+              <option value="">All Employment Types</option>
+              {% for val, label in job_types %}
+                <option value="{{ val }}" {% if selected_type == val %}selected{% endif %}>{{ label }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <!-- Minimum Salary -->
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1.5">Min Annual Salary ($)</label>
+            <input type="number" name="min_salary" value="{{ selected_min_salary }}" class="form-input" placeholder="e.g. 80000" step="5000">
+          </div>
+
+          <!-- Preserve Sort Value -->
+          <input type="hidden" name="sort" value="{{ selected_sort }}">
+
+          <button type="submit" class="btn-primary w-full py-2.5 mt-2">
+            Apply Search Filters
+          </button>
+        </form>
+      </div>
+    </aside>
+
+    <!-- JOB LISTINGS FEED (8 cols) -->
+    <main class="lg:col-span-8">
+      
+      <!-- Sort & Filter Bar -->
+      <div class="card-modern p-4 mb-6 flex flex-wrap items-center justify-between gap-4">
+        <div class="text-xs text-slate-500 font-semibold">
+          Showing <span class="text-navy-900 font-bold">{{ page_obj.start_index }}-{{ page_obj.end_index }}</span> of {{ total_count }} roles
+        </div>
+
+        <div class="flex items-center gap-3 ml-auto">
+          <form action="{% url 'all_jobs' %}" method="GET" class="flex items-center gap-2">
+            {% if query %}<input type="hidden" name="q" value="{{ query }}">{% endif %}
+            {% if selected_location %}<input type="hidden" name="location" value="{{ selected_location }}">{% endif %}
+            {% if selected_category %}<input type="hidden" name="category" value="{{ selected_category }}">{% endif %}
+            {% if selected_type %}<input type="hidden" name="type" value="{{ selected_type }}">{% endif %}
+            {% if selected_remote %}<input type="hidden" name="remote" value="{{ selected_remote }}">{% endif %}
+            {% if selected_min_salary %}<input type="hidden" name="min_salary" value="{{ selected_min_salary }}">{% endif %}
+
+            <label class="text-xs text-slate-500 font-semibold whitespace-nowrap">Sort by:</label>
+            <select name="sort" class="form-select text-xs py-1.5 px-2.5 w-auto" onchange="this.form.submit()">
+              <option value="newest" {% if selected_sort == 'newest' %}selected{% endif %}>Newest First</option>
+              <option value="salary_high" {% if selected_sort == 'salary_high' %}selected{% endif %}>Highest Salary</option>
+              <option value="popular" {% if selected_sort == 'popular' %}selected{% endif %}>Most Popular</option>
+              <option value="oldest" {% if selected_sort == 'oldest' %}selected{% endif %}>Oldest First</option>
+            </select>
+          </form>
+        </div>
+      </div>
+
+      <!-- JOB CARDS LIST -->
+      <div class="space-y-4">
+        {% for job in page_obj %}
+          <div class="card-modern card-hover p-6">
+            <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-3">
+              <div class="flex items-start gap-4">
+                <div class="w-12 h-12 rounded-xl bg-navy-50 border border-slate-200 flex items-center justify-center font-bold text-navy-800 text-lg overflow-hidden flex-shrink-0">
+                  {% if job.company.logo %}
+                    <img src="{{ job.company.logo.url }}" alt="{{ job.company.name }}" class="w-full h-full object-cover">
+                  {% else %}
+                    <span>{{ job.company.name|make_list|first|upper }}</span>
+                  {% endif %}
+                </div>
+                <div>
+                  <h3 class="text-lg font-bold text-navy-900 hover:text-navy-700 transition">
+                    <a href="{% url 'job_details' slug=job.slug %}">{{ job.title }}</a>
+                  </h3>
+                  <div class="text-xs text-slate-500 flex flex-wrap items-center gap-2 mt-0.5">
+                    <span class="font-semibold text-slate-700">{{ job.company.name }}</span>
+                    <span>&bull;</span>
+                    <span>{{ job.location }}</span>
+                    <span>&bull;</span>
+                    <span class="text-slate-400">Posted {{ job.created_at|timesince }} ago</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Compensation tag -->
+              <div class="text-left sm:text-right flex-shrink-0">
+                <span class="text-sm font-bold text-navy-900 block">{{ job.formatted_salary }}</span>
+                <span class="text-[11px] text-slate-400 font-semibold">{{ job.open_positions }} position(s)</span>
+              </div>
+            </div>
+
+            <!-- Tags -->
+            <div class="flex flex-wrap gap-1.5 my-3">
+              <span class="badge-navy">{{ job.job_type }}</span>
+              {% if job.is_remote %}
+                <span class="badge-success">Remote</span>
+              {% endif %}
+              <span class="badge-accent">{{ job.get_experience_level_display }}</span>
+              {% if job.category %}
+                <span class="badge-navy bg-slate-100 text-slate-700 border-slate-200">{{ job.category.name }}</span>
+              {% endif %}
+            </div>
+
+            <!-- Description excerpt -->
+            <p class="text-xs text-slate-600 line-clamp-2 leading-relaxed mb-4">
+              {{ job.description|truncatewords:28 }}
+            </p>
+
+            <!-- Card Footer: Skills & Action -->
+            <div class="pt-3 border-t border-slate-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+              <div class="flex flex-wrap gap-1">
+                {% for s in job.skills_list|slice:":3" %}
+                  <span class="skill-pill">{{ s }}</span>
+                {% endfor %}
+              </div>
+
+              <div class="flex items-center gap-2 self-end sm:self-auto">
+                {% if job.id in applied_job_ids %}
+                  <span class="badge-success py-1.5 px-3">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                    Applied
+                  </span>
+                {% else %}
+                  <a href="{% url 'job_details' slug=job.slug %}" class="btn-primary text-xs py-1.5 px-4">
+                    View & Apply
+                  </a>
+                {% endif %}
+              </div>
+            </div>
+
+          </div>
+        {% empty %}
+          <div class="card-modern p-12 text-center">
+            <div class="w-16 h-16 rounded-2xl bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-4 text-2xl font-bold">
+              ∅
+            </div>
+            <h3 class="text-lg font-bold text-navy-900 mb-1">No Matching Jobs Found</h3>
+            <p class="text-xs text-slate-500 max-w-sm mx-auto mb-6">
+              We couldn't find openings matching your filter criteria. Try broadening your keyword or location search.
+            </p>
+            <a href="{% url 'all_jobs' %}" class="btn-primary text-xs py-2 px-5">
+              Reset All Filters
+            </a>
+          </div>
+        {% endfor %}
+      </div>
+
+      <!-- PAGINATION -->
+      {% if page_obj.has_other_pages %}
+        <nav class="flex items-center justify-center gap-2 mt-10" aria-label="Pagination">
+          {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}{% if query %}&q={{ query }}{% endif %}{% if selected_location %}&location={{ selected_location }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if selected_type %}&type={{ selected_type }}{% endif %}{% if selected_remote %}&remote={{ selected_remote }}{% endif %}{% if selected_min_salary %}&min_salary={{ selected_min_salary }}{% endif %}{% if selected_sort %}&sort={{ selected_sort }}{% endif %}" class="pagination-btn">
+              &larr; Previous
+            </a>
+          {% endif %}
+
+          {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+              <span class="pagination-btn active">{{ num }}</span>
+            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+              <a href="?page={{ num }}{% if query %}&q={{ query }}{% endif %}{% if selected_location %}&location={{ selected_location }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if selected_type %}&type={{ selected_type }}{% endif %}{% if selected_remote %}&remote={{ selected_remote }}{% endif %}{% if selected_min_salary %}&min_salary={{ selected_min_salary }}{% endif %}{% if selected_sort %}&sort={{ selected_sort }}{% endif %}" class="pagination-btn">
+                {{ num }}
+              </a>
+            {% endif %}
+          {% endfor %}
+
+          {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}{% if query %}&q={{ query }}{% endif %}{% if selected_location %}&location={{ selected_location }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if selected_type %}&type={{ selected_type }}{% endif %}{% if selected_remote %}&remote={{ selected_remote }}{% endif %}{% if selected_min_salary %}&min_salary={{ selected_min_salary }}{% endif %}{% if selected_sort %}&sort={{ selected_sort }}{% endif %}" class="pagination-btn">
+              Next &rarr;
+            </a>
+          {% endif %}
+        </nav>
+      {% endif %}
+
+    </main>
+
+  </div>
+</div>
+{% endblock %}

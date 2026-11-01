@@ -1,0 +1,14 @@
+/* Edit Job Page Stylesheet */
+.edit-job-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.edit-header-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--slate-200);
+  margin-bottom: 1.5rem;
+}

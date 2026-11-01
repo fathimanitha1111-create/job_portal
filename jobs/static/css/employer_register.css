@@ -1,0 +1,17 @@
+/* Employer Registration Page Stylesheet */
+.employer-register-card {
+  max-width: 620px;
+  margin: 0 auto;
+}
+
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.925rem;
+  font-weight: 700;
+  color: var(--navy-800);
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--slate-200);
+}

@@ -1,0 +1,115 @@
+{% extends 'jobs/base.html' %}
+{% load static %}
+
+{% block title %}Candidate Registration | CareerConnect{% endblock %}
+
+{% block page_css %}
+  <link rel="stylesheet" href="{% static 'css/candidate_register.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="py-12 sm:py-16">
+  <div class="max-w-xl mx-auto px-4">
+    <div class="card-modern p-6 sm:p-10 shadow-lg">
+      
+      <!-- Role Switcher Tabs -->
+      <div class="flex rounded-xl bg-slate-100 p-1 mb-8 border border-slate-200">
+        <a href="{% url 'candidate_register' %}" class="flex-1 py-2 text-center rounded-lg text-xs font-bold transition role-tab-active">
+          I'm a Candidate
+        </a>
+        <a href="{% url 'employer_register' %}" class="flex-1 py-2 text-center rounded-lg text-xs font-semibold transition role-tab-inactive">
+          I'm an Employer
+        </a>
+      </div>
+
+      <div class="text-center mb-8">
+        <h1 class="text-2xl font-extrabold text-navy-900 mb-2">Create Candidate Account</h1>
+        <p class="text-xs sm:text-sm text-slate-500">Apply for positions, track application statuses, and build your profile.</p>
+      </div>
+
+      <form method="POST" enctype="multipart/form-data" class="space-y-4">
+        {% csrf_token %}
+
+        {% if form.errors %}
+          <div class="p-3 rounded-lg bg-rose-50 border border-rose-200 text-xs text-rose-700">
+            Please resolve the errors highlighted below.
+          </div>
+        {% endif %}
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">First Name <span class="text-rose-500">*</span></label>
+            {{ form.first_name }}
+            {% if form.first_name.errors %}<div class="text-[11px] text-rose-600 mt-1">{{ form.first_name.errors }}</div>{% endif %}
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">Last Name <span class="text-rose-500">*</span></label>
+            {{ form.last_name }}
+            {% if form.last_name.errors %}<div class="text-[11px] text-rose-600 mt-1">{{ form.last_name.errors }}</div>{% endif %}
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1">Username <span class="text-rose-500">*</span></label>
+          {{ form.username }}
+          {% if form.username.errors %}<div class="text-[11px] text-rose-600 mt-1">{{ form.username.errors }}</div>{% endif %}
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1">Email Address <span class="text-rose-500">*</span></label>
+          {{ form.email }}
+          {% if form.email.errors %}<div class="text-[11px] text-rose-600 mt-1">{{ form.email.errors }}</div>{% endif %}
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1">Professional Headline</label>
+          {{ form.headline }}
+          <span class="text-[11px] text-slate-400">e.g. Senior Full-Stack Python Developer | Django & Tailwind</span>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1">Primary Skills</label>
+          {{ form.skills }}
+          <span class="text-[11px] text-slate-400">Comma-separated: Python, Django, JavaScript, Tailwind CSS</span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">Phone Number</label>
+            {{ form.phone }}
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">Attach Resume (PDF/DOCX)</label>
+            {{ form.resume }}
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">Password <span class="text-rose-500">*</span></label>
+            {{ form.password1 }}
+            {% if form.password1.errors %}<div class="text-[11px] text-rose-600 mt-1">{{ form.password1.errors }}</div>{% endif %}
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">Confirm Password <span class="text-rose-500">*</span></label>
+            {{ form.password2 }}
+            {% if form.password2.errors %}<div class="text-[11px] text-rose-600 mt-1">{{ form.password2.errors }}</div>{% endif %}
+          </div>
+        </div>
+
+        <div class="pt-4">
+          <button type="submit" class="btn-primary w-full py-3 text-sm font-bold shadow-md">
+            Create Candidate Account
+          </button>
+        </div>
+
+        <div class="text-center text-xs text-slate-500 pt-2">
+          Already have an account? 
+          <a href="{% url 'candidate_login' %}" class="text-navy-800 font-bold hover:underline">Sign In</a>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

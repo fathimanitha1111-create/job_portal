@@ -1,0 +1,332 @@
+{% extends 'jobs/base.html' %}
+{% load static %}
+
+{% block title %}CareerConnect | Find Dream Career Opportunities With Verified Companies{% endblock %}
+
+{% block page_css %}
+  <link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
+
+{% block content %}
+<!-- HERO SECTION -->
+<section class="hero-gradient-bg border-b border-slate-200 py-12 lg:py-20 overflow-hidden">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      
+      <!-- Left Column: Copy & Search Form (7 cols) -->
+      <div class="lg:col-span-7">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-navy-50 border border-navy-200 text-xs font-semibold text-navy-800 mb-5">
+          <span class="w-2 h-2 rounded-full bg-accent-500 animate-pulse"></span>
+          <span>Over 250+ new verified roles added this week</span>
+        </div>
+
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-navy-900 tracking-tight leading-[1.15] mb-4">
+          Connect With Dream <span class="text-accent-600">Career Opportunities</span> at Industry Leaders
+        </h1>
+
+        <p class="text-base sm:text-lg text-slate-600 leading-relaxed mb-8 max-w-xl">
+          Search thousands of verified tech, design, marketing, and leadership positions. Transparent salaries, direct employer applications, and real-time review updates.
+        </p>
+
+        <!-- Search Form Card -->
+        <div class="hero-search-card bg-white p-4 sm:p-5 rounded-2xl shadow-xl border border-slate-200 mb-6">
+          <form action="{% url 'all_jobs' %}" method="GET" class="grid grid-cols-1 sm:grid-cols-12 gap-3 items-end">
+            
+            <!-- Keyword -->
+            <div class="sm:col-span-5">
+              <label for="homeKeyword" class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Keywords</label>
+              <div class="relative">
+                <input id="homeKeyword" type="text" name="q" class="form-input pl-9 h-11" placeholder="Job title, skill, or company...">
+                <svg class="w-4 h-4 text-slate-400 absolute left-3 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+              </div>
+            </div>
+
+            <!-- Location -->
+            <div class="sm:col-span-4">
+              <label for="homeLocation" class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Location</label>
+              <div class="relative">
+                <input id="homeLocation" type="text" name="location" class="form-input pl-9 h-11" placeholder="City, State, or 'Remote'...">
+                <svg class="w-4 h-4 text-slate-400 absolute left-3 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+              </div>
+            </div>
+
+            <!-- Search Button (Properly Aligned) -->
+            <div class="sm:col-span-3">
+              <label class="hidden sm:block text-xs font-bold text-transparent select-none mb-1.5">&nbsp;</label>
+              <button type="submit" class="btn-primary w-full h-11 py-0 px-4 flex items-center justify-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                <span>Find Jobs</span>
+              </button>
+            </div>
+
+          </form>
+        </div>
+
+        <!-- Trending Pills -->
+        <div class="flex flex-wrap items-center gap-2 text-xs text-slate-500">
+          <span class="font-bold text-navy-800">Popular Searches:</span>
+          <a href="{% url 'all_jobs' %}?q=Python" class="px-2.5 py-1 rounded-md bg-white border border-slate-200 text-slate-600 hover:border-navy-400 hover:text-navy-900 transition">Python</a>
+          <a href="{% url 'all_jobs' %}?remote=1" class="px-2.5 py-1 rounded-md bg-accent-50 border border-accent-200 text-accent-800 hover:bg-accent-100 transition font-semibold">Remote Roles</a>
+          <a href="{% url 'all_jobs' %}?type=Full-time" class="px-2.5 py-1 rounded-md bg-white border border-slate-200 text-slate-600 hover:border-navy-400 hover:text-navy-900 transition">Full-time</a>
+          <a href="{% url 'all_jobs' %}?q=Designer" class="px-2.5 py-1 rounded-md bg-white border border-slate-200 text-slate-600 hover:border-navy-400 hover:text-navy-900 transition">Product Designer</a>
+        </div>
+      </div>
+
+      <!-- Right Column: Hero Graphic Illustration (5 cols - Fully Responsive) -->
+      <div class="lg:col-span-5 w-full mt-10 lg:mt-0 max-w-lg lg:max-w-none mx-auto block">
+        <div class="relative">
+          <div class="absolute -inset-2 sm:-inset-4 bg-gradient-to-tr from-accent-200/40 to-navy-100/40 rounded-3xl filter blur-xl opacity-70 pointer-events-none"></div>
+          <div class="relative bg-white p-2 sm:p-3 rounded-2xl shadow-xl border border-slate-200 overflow-hidden">
+            <img src="{% static 'images/hero-image.png' %}" alt="CareerConnect Job Portal Preview" class="w-full h-auto rounded-xl object-contain block mx-auto" width="800" height="520">
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- METRICS STRIP -->
+<section class="bg-white border-b border-slate-200 py-8">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+      <div class="stat-item p-2">
+        <div class="text-2xl sm:text-3xl font-extrabold text-navy-900 mb-1">{{ site_stats.total_jobs|default:50 }}+</div>
+        <div class="text-xs sm:text-sm font-semibold text-slate-500 uppercase tracking-wider">Active Verified Jobs</div>
+      </div>
+      <div class="stat-item p-2">
+        <div class="text-2xl sm:text-3xl font-extrabold text-navy-900 mb-1">{{ site_stats.total_companies|default:25 }}+</div>
+        <div class="text-xs sm:text-sm font-semibold text-slate-500 uppercase tracking-wider">Hiring Companies</div>
+      </div>
+      <div class="stat-item p-2">
+        <div class="text-2xl sm:text-3xl font-extrabold text-navy-900 mb-1">98%</div>
+        <div class="text-xs sm:text-sm font-semibold text-slate-500 uppercase tracking-wider">Candidate Satisfaction</div>
+      </div>
+      <div class="stat-item p-2">
+        <div class="text-2xl sm:text-3xl font-extrabold text-navy-900 mb-1">&lt; 48 hrs</div>
+        <div class="text-xs sm:text-sm font-semibold text-slate-500 uppercase tracking-wider">Average Application Review</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BROWSE BY CATEGORY -->
+<section class="py-16 bg-slate-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
+      <div>
+        <span class="badge-navy mb-2">Explore Domains</span>
+        <h2 class="text-2xl sm:text-3xl font-bold text-navy-900">Browse Openings by Specialization</h2>
+      </div>
+      <a href="{% url 'all_jobs' %}" class="inline-flex items-center gap-1 text-sm font-semibold text-navy-700 hover:text-navy-900">
+        <span>View all opportunities</span>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+      </a>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      {% for cat in categories %}
+        <a href="{% url 'all_jobs' %}?category={{ cat.slug }}" class="card-modern card-hover category-card p-6 block">
+          <div class="category-icon-box mb-4">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+          </div>
+          <h3 class="text-base font-bold text-navy-900 mb-1">{{ cat.name }}</h3>
+          <p class="text-xs text-slate-500">{{ cat.active_jobs|default:cat.active_jobs_count }} open roles</p>
+        </a>
+      {% empty %}
+        <div class="col-span-4 text-center py-8 text-slate-500">No categories found.</div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- FEATURED JOBS SECTION -->
+<section class="py-16 bg-white border-t border-b border-slate-200">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
+      <div>
+        <span class="badge-accent mb-2">Priority Selection</span>
+        <h2 class="text-2xl sm:text-3xl font-bold text-navy-900">Featured Job Openings</h2>
+        <p class="text-sm text-slate-500 mt-1">Direct applications with verified salaries and competitive health benefits.</p>
+      </div>
+      <a href="{% url 'all_jobs' %}" class="btn-primary text-xs py-2 px-4">
+        Explore All {{ site_stats.total_jobs }} Jobs &rarr;
+      </a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {% for job in featured_jobs %}
+        <div class="card-modern card-hover p-6 flex flex-col justify-between">
+          <div>
+            <!-- Header: Company Info -->
+            <div class="flex items-start gap-4 mb-4">
+              <div class="w-12 h-12 rounded-xl bg-navy-50 border border-slate-200 flex items-center justify-center font-bold text-navy-800 text-lg overflow-hidden flex-shrink-0">
+                {% if job.company.logo %}
+                  <img src="{{ job.company.logo.url }}" alt="{{ job.company.name }}" class="w-full h-full object-cover">
+                {% else %}
+                  <span>{{ job.company.name|make_list|first|upper }}</span>
+                {% endif %}
+              </div>
+              <div class="overflow-hidden">
+                <span class="text-xs font-semibold text-slate-500 block truncate">{{ job.company.name }}</span>
+                <span class="text-xs text-slate-400 flex items-center gap-1">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path></svg>
+                  {{ job.location }}
+                </span>
+              </div>
+            </div>
+
+            <!-- Job Title -->
+            <h3 class="text-lg font-bold text-navy-900 mb-2 hover:text-navy-700 transition">
+              <a href="{% url 'job_details' slug=job.slug %}">{{ job.title }}</a>
+            </h3>
+
+            <!-- Tags -->
+            <div class="flex flex-wrap gap-1.5 mb-4">
+              <span class="badge-navy">{{ job.job_type }}</span>
+              {% if job.is_remote %}
+                <span class="badge-success">Remote</span>
+              {% endif %}
+              <span class="badge-accent">{{ job.get_experience_level_display }}</span>
+            </div>
+
+            <!-- Skills preview -->
+            <div class="flex flex-wrap gap-1 mb-4">
+              {% for s in job.skills_list|slice:":3" %}
+                <span class="skill-pill">{{ s }}</span>
+              {% endfor %}
+            </div>
+          </div>
+
+          <!-- Bottom: Salary & CTA -->
+          <div class="pt-4 border-t border-slate-200 flex items-center justify-between mt-auto">
+            <div>
+              <span class="text-[10px] font-bold text-slate-400 uppercase block tracking-wider">Salary</span>
+              <span class="text-xs font-bold text-navy-900">{{ job.formatted_salary }}</span>
+            </div>
+            <a href="{% url 'job_details' slug=job.slug %}" class="btn-outline text-xs py-1.5 px-3">
+              View Details
+            </a>
+          </div>
+
+        </div>
+      {% empty %}
+        <div class="col-span-3 text-center py-8 text-slate-500">No featured jobs available.</div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- RECENT JOBS FEED -->
+<section class="py-16 bg-slate-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between mb-8">
+      <div>
+        <span class="badge-navy mb-2">New Openings</span>
+        <h2 class="text-2xl sm:text-3xl font-bold text-navy-900">Latest Published Roles</h2>
+      </div>
+      <a href="{% url 'all_jobs' %}?sort=newest" class="text-sm font-semibold text-navy-700 hover:text-navy-900">
+        Browse all latest &rarr;
+      </a>
+    </div>
+
+    <div class="space-y-4">
+      {% for job in recent_jobs %}
+        <div class="card-modern card-hover p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-navy-50 border border-slate-200 flex items-center justify-center font-bold text-navy-800 text-lg overflow-hidden flex-shrink-0">
+              {% if job.company.logo %}
+                <img src="{{ job.company.logo.url }}" alt="{{ job.company.name }}" class="w-full h-full object-cover">
+              {% else %}
+                <span>{{ job.company.name|make_list|first|upper }}</span>
+              {% endif %}
+            </div>
+            <div>
+              <h3 class="text-base font-bold text-navy-900 hover:text-navy-700 transition">
+                <a href="{% url 'job_details' slug=job.slug %}">{{ job.title }}</a>
+              </h3>
+              <div class="text-xs text-slate-500 flex flex-wrap items-center gap-2 mt-0.5">
+                <span class="font-semibold text-slate-700">{{ job.company.name }}</span>
+                <span>&bull;</span>
+                <span>{{ job.location }}</span>
+                <span>&bull;</span>
+                <span class="text-slate-400">Posted {{ job.created_at|timesince }} ago</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between md:justify-end gap-4">
+            <div class="text-left md:text-right">
+              <span class="text-sm font-bold text-navy-900 block">{{ job.formatted_salary }}</span>
+              <span class="text-xs text-slate-500">{{ job.job_type }} {% if job.is_remote %}(Remote){% endif %}</span>
+            </div>
+            <a href="{% url 'job_details' slug=job.slug %}" class="btn-primary text-xs py-2 px-4 whitespace-nowrap">
+              Apply Now
+            </a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="py-16 bg-white border-t border-b border-slate-200">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-2xl mx-auto mb-12">
+      <span class="badge-navy mb-2">Streamlined Experience</span>
+      <h2 class="text-2xl sm:text-3xl font-bold text-navy-900">How CareerConnect Works</h2>
+      <p class="text-slate-500 text-sm mt-2">Designed for fast, transparent matching between candidate talent and hiring teams.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+      <div class="card-modern p-6">
+        <div class="w-14 h-14 rounded-2xl bg-navy-50 text-navy-800 flex items-center justify-center text-xl font-bold mx-auto mb-4">
+          1
+        </div>
+        <h3 class="text-lg font-bold text-navy-900 mb-2">Create Profile & Resume</h3>
+        <p class="text-sm text-slate-500">Sign up in seconds, upload your resume, and detail your skills to be discovered.</p>
+      </div>
+
+      <div class="card-modern p-6">
+        <div class="w-14 h-14 rounded-2xl bg-accent-50 text-accent-700 flex items-center justify-center text-xl font-bold mx-auto mb-4">
+          2
+        </div>
+        <h3 class="text-lg font-bold text-navy-900 mb-2">Search & Apply Directly</h3>
+        <p class="text-sm text-slate-500">Filter by location, compensation, or remote-only. Submit 1-click verified applications.</p>
+      </div>
+
+      <div class="card-modern p-6">
+        <div class="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center text-xl font-bold mx-auto mb-4">
+          3
+        </div>
+        <h3 class="text-lg font-bold text-navy-900 mb-2">Track Review Stages</h3>
+        <p class="text-sm text-slate-500">Real-time status tracking from Pending to Shortlisted and Offer Acceptance.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EMPLOYER CALL TO ACTION BANNER -->
+<section class="py-16 bg-slate-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="bg-navy-900 text-white p-8 sm:p-12 rounded-3xl shadow-xl flex flex-col lg:flex-row items-center justify-between gap-8">
+      <div class="max-w-2xl">
+        <span class="inline-block px-3 py-1 rounded-full bg-navy-800 text-accent-400 text-xs font-bold uppercase tracking-wider mb-3">For Hiring Teams</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-white mb-2">Are You an Employer Hiring Top Talent?</h2>
+        <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+          Post your job vacancies to reach thousands of qualified candidates. Review applicant resumes and manage hiring pipelines seamlessly.
+        </p>
+      </div>
+      <div class="flex flex-wrap gap-3">
+        <a href="{% url 'post_job' %}" class="btn-accent px-6 py-3 font-bold text-sm">
+          Post a Job Opening &rarr;
+        </a>
+        <a href="{% url 'employer_register' %}" class="btn-outline border-navy-700 bg-navy-800 text-white hover:bg-navy-700 px-5 py-3 text-sm">
+          Employer Registration
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

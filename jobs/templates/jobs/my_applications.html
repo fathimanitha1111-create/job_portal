@@ -1,0 +1,152 @@
+{% extends 'jobs/base.html' %}
+{% load static %}
+
+{% block title %}My Job Applications | CareerConnect{% endblock %}
+
+{% block page_css %}
+  <link rel="stylesheet" href="{% static 'css/my_applications.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="bg-white border-b border-slate-200 py-6">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-xs text-slate-400 mb-1">
+      <a href="{% url 'candidate_dashboard' %}" class="hover:underline">Dashboard</a> &gt; <span>My Applications</span>
+    </div>
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      <div>
+        <h1 class="text-2xl font-extrabold text-navy-900">Track Your Job Applications</h1>
+        <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Real-time status tracking for all your submitted applications.</p>
+      </div>
+      <a href="{% url 'all_jobs' %}" class="btn-primary text-xs py-2 px-4 self-start sm:self-auto">
+        Search More Jobs
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+
+  <!-- Status Filter Pills -->
+  <div class="flex flex-wrap items-center gap-2 mb-6">
+    <a href="{% url 'my_applications' %}" class="px-3 py-1.5 rounded-lg text-xs font-semibold {% if not status_filter %}bg-navy-800 text-white{% else %}bg-white border border-slate-200 text-slate-600 hover:bg-slate-50{% endif %}">
+      All Applications ({{ total_count }})
+    </a>
+    {% for val, label in status_choices %}
+      <a href="?status={{ val }}" class="px-3 py-1.5 rounded-lg text-xs font-semibold {% if status_filter == val %}bg-navy-800 text-white{% else %}bg-white border border-slate-200 text-slate-600 hover:bg-slate-50{% endif %}">
+        {{ label }}
+      </a>
+    {% endfor %}
+  </div>
+
+  {% if applications %}
+    <div class="space-y-5">
+      {% for app in applications %}
+        <div class="card-modern card-hover p-6">
+          <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 pb-4 border-b border-slate-100">
+            
+            <!-- Company & Job Info -->
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 rounded-xl bg-navy-50 border border-slate-200 flex items-center justify-center font-bold text-navy-800 text-lg flex-shrink-0">
+                {% if app.job.company.logo %}
+                  <img src="{{ app.job.company.logo.url }}" alt="{{ app.job.company.name }}" class="w-full h-full object-cover">
+                {% else %}
+                  <span>{{ app.job.company.name|make_list|first|upper }}</span>
+                {% endif %}
+              </div>
+              <div>
+                <h2 class="text-base font-bold text-navy-900 hover:text-navy-700">
+                  <a href="{% url 'job_details' slug=app.job.slug %}">{{ app.job.title }}</a>
+                </h2>
+                <div class="text-xs text-slate-500 mt-0.5">
+                  <span class="font-semibold text-slate-700">{{ app.job.company.name }}</span> &bull; 
+                  <span>{{ app.job.location }}</span>
+                </div>
+                <div class="text-[11px] text-slate-400 mt-1">Submitted on {{ app.applied_at|date:"M d, Y" }}</div>
+              </div>
+            </div>
+
+            <!-- Status Badge & CTA -->
+            <div class="flex items-center gap-3 self-end lg:self-auto">
+              {% if app.status == 'Accepted' %}
+                <span class="badge-success text-xs py-1.5 px-3">{{ app.status }}</span>
+              {% elif app.status == 'Shortlisted' %}
+                <span class="badge-accent text-xs py-1.5 px-3">{{ app.status }}</span>
+              {% elif app.status == 'Rejected' %}
+                <span class="badge-danger text-xs py-1.5 px-3">{{ app.status }}</span>
+              {% else %}
+                <span class="badge-warning text-xs py-1.5 px-3">{{ app.status }}</span>
+              {% endif %}
+              <a href="{% url 'job_details' slug=app.job.slug %}" class="btn-outline text-xs py-1.5 px-3">
+                View Job
+              </a>
+            </div>
+
+          </div>
+
+          <!-- Application Status Timeline Stepper -->
+          <div class="pt-4">
+            <div class="timeline-stepper">
+              
+              <!-- 1. Submitted -->
+              <div class="timeline-step completed">
+                <div class="timeline-circle">✓</div>
+                <span class="timeline-label">Submitted</span>
+              </div>
+
+              <!-- 2. Reviewing (Pending) -->
+              <div class="timeline-step {% if app.status == 'Pending' %}active{% elif app.status == 'Shortlisted' or app.status == 'Accepted' %}completed{% else %}completed{% endif %}">
+                <div class="timeline-circle">
+                  {% if app.status != 'Pending' %}✓{% else %}2{% endif %}
+                </div>
+                <span class="timeline-label">In Review</span>
+              </div>
+
+              <!-- 3. Shortlisted -->
+              <div class="timeline-step {% if app.status == 'Shortlisted' %}active{% elif app.status == 'Accepted' %}completed{% elif app.status == 'Rejected' %}rejected{% endif %}">
+                <div class="timeline-circle">
+                  {% if app.status == 'Accepted' %}✓{% elif app.status == 'Rejected' %}&times;{% else %}3{% endif %}
+                </div>
+                <span class="timeline-label">Shortlisted</span>
+              </div>
+
+              <!-- 4. Final Decision -->
+              <div class="timeline-step {% if app.status == 'Accepted' %}completed{% elif app.status == 'Rejected' %}rejected{% endif %}">
+                <div class="timeline-circle">
+                  {% if app.status == 'Accepted' %}★{% elif app.status == 'Rejected' %}&times;{% else %}4{% endif %}
+                </div>
+                <span class="timeline-label">
+                  {% if app.status == 'Accepted' %}Hired{% elif app.status == 'Rejected' %}Not Selected{% else %}Decision{% endif %}
+                </span>
+              </div>
+
+            </div>
+
+            {% if app.employer_notes %}
+              <div class="mt-4 p-3 rounded-lg bg-navy-50 border border-navy-200 text-xs text-navy-900">
+                <strong class="text-navy-950 font-bold block mb-0.5">Note from hiring team:</strong>
+                {{ app.employer_notes }}
+              </div>
+            {% endif %}
+          </div>
+
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="card-modern p-12 text-center">
+      <div class="w-16 h-16 rounded-2xl bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-4 text-2xl font-bold">
+        ∅
+      </div>
+      <h3 class="text-lg font-bold text-navy-900 mb-1">No Applications Found</h3>
+      <p class="text-xs text-slate-500 max-w-sm mx-auto mb-6">
+        You haven't submitted any job applications matching this filter. Browse our curated jobs feed to start applying.
+      </p>
+      <a href="{% url 'all_jobs' %}" class="btn-primary text-xs py-2 px-5">
+        Explore All Jobs
+      </a>
+    </div>
+  {% endif %}
+
+</div>
+{% endblock %}

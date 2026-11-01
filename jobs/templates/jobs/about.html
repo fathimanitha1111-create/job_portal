@@ -1,0 +1,90 @@
+{% extends 'jobs/base.html' %}
+{% load static %}
+
+{% block title %}About CareerConnect | Platform & Mission{% endblock %}
+
+{% block page_css %}
+  <link rel="stylesheet" href="{% static 'css/about.css' %}">
+{% endblock %}
+
+{% block content %}
+<!-- ABOUT HERO -->
+<section class="about-hero-pattern py-14 lg:py-20 border-b border-slate-200">
+  <div class="max-w-4xl mx-auto px-4 text-center">
+    <span class="badge-navy mb-3">Our Core Mission</span>
+    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-navy-900 tracking-tight leading-tight mb-4">
+      Bridging the Gap Between <span class="text-accent-600">Ambitious Talent</span> & World-Class Teams
+    </h1>
+    <p class="text-base sm:text-lg text-slate-600 leading-relaxed max-w-2xl mx-auto">
+      CareerConnect was founded to eliminate hiring friction, enforce salary transparency, and give both candidates and employers a clean, responsive platform.
+    </p>
+  </div>
+</section>
+
+<!-- VALUES SECTION -->
+<section class="py-16 bg-slate-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+      
+      <div class="card-modern team-card p-8 text-center">
+        <div class="w-14 h-14 rounded-2xl bg-navy-50 text-navy-800 flex items-center justify-center text-xl font-bold mx-auto mb-4">
+          <svg class="w-7 h-7 text-navy-800" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+        </div>
+        <h3 class="text-lg font-bold text-navy-900 mb-2">Verified Hiring Partners</h3>
+        <p class="text-xs sm:text-sm text-slate-500 leading-relaxed">
+          Every employer and organization on CareerConnect is vetted to ensure legitimate job offers and safe candidate communication.
+        </p>
+      </div>
+
+      <div class="card-modern team-card p-8 text-center">
+        <div class="w-14 h-14 rounded-2xl bg-accent-50 text-accent-700 flex items-center justify-center text-xl font-bold mx-auto mb-4">
+          <svg class="w-7 h-7 text-accent-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        </div>
+        <h3 class="text-lg font-bold text-navy-900 mb-2">Upfront Compensation</h3>
+        <p class="text-xs sm:text-sm text-slate-500 leading-relaxed">
+          No hidden salary expectations. We encourage explicit salary bands, equity ranges, and clear remote work policies.
+        </p>
+      </div>
+
+      <div class="card-modern team-card p-8 text-center">
+        <div class="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center text-xl font-bold mx-auto mb-4">
+          <svg class="w-7 h-7 text-emerald-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+        </div>
+        <h3 class="text-lg font-bold text-navy-900 mb-2">Direct Hiring Flow</h3>
+        <p class="text-xs sm:text-sm text-slate-500 leading-relaxed">
+          Candidates apply directly to the employer hiring dashboard. Real-time review updates keep applicants informed at every stage.
+        </p>
+      </div>
+
+    </div>
+
+    <!-- TECHNOLOGY ARCHITECTURE CARD -->
+    <div class="card-modern p-8 sm:p-12 bg-white text-center">
+      <span class="badge-navy mb-3">Enterprise Stack</span>
+      <h2 class="text-2xl font-bold text-navy-900 mb-3">Modern & Robust Technology Stack</h2>
+      <p class="text-sm text-slate-600 max-w-2xl mx-auto mb-8">
+        CareerConnect is crafted using an enterprise-ready Python Django backend, SQLite database (architected for instant MySQL migration), and a responsive Tailwind CSS frontend bundled with Vite.
+      </p>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto">
+        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+          <div class="font-bold text-navy-900 text-sm">Python Django</div>
+          <div class="text-xs text-slate-500 mt-1">Backend & Security</div>
+        </div>
+        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+          <div class="font-bold text-navy-900 text-sm">Vite & JS</div>
+          <div class="text-xs text-slate-500 mt-1">Vanilla JavaScript</div>
+        </div>
+        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+          <div class="font-bold text-navy-900 text-sm">Tailwind CSS</div>
+          <div class="text-xs text-slate-500 mt-1">Navy & Cyan System</div>
+        </div>
+        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+          <div class="font-bold text-navy-900 text-sm">SQLite / MySQL</div>
+          <div class="text-xs text-slate-500 mt-1">Structured Schema</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

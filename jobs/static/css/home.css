@@ -1,0 +1,70 @@
+/* Home Page Stylesheet - CareerConnect */
+
+:root {
+  --navy-950: #060d17;
+  --navy-900: #0a192f;
+  --navy-800: #102a43;
+  --navy-700: #243b53;
+  --navy-50: #f0f4f8;
+  --accent-500: #06b6d4;
+  --accent-600: #0891b2;
+  --slate-100: #f1f5f9;
+  --slate-200: #e2e8f0;
+  --slate-300: #cbd5e1;
+  --slate-500: #64748b;
+  --slate-700: #334155;
+}
+
+.hero-gradient-bg {
+  background: radial-gradient(circle at 10% 20%, rgba(16, 42, 67, 0.05) 0%, transparent 50%),
+              radial-gradient(circle at 90% 80%, rgba(6, 182, 212, 0.08) 0%, transparent 50%),
+              #ffffff;
+  overflow-x: hidden;
+}
+
+.hero-search-card {
+  box-shadow: 0 20px 40px -15px rgba(16, 42, 67, 0.1);
+  border: 1px solid var(--slate-200);
+}
+
+/* Category Cards */
+.category-icon-box {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background-color: var(--navy-50);
+  color: var(--navy-800);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  transition: all 0.25s ease;
+}
+
+.category-card:hover .category-icon-box {
+  background-color: var(--navy-800);
+  color: #ffffff;
+  transform: scale(1.08) rotate(3deg);
+}
+
+/* Metrics Dividers */
+.stat-item {
+  position: relative;
+}
+
+.stat-item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 20%;
+  height: 60%;
+  width: 1px;
+  background-color: var(--slate-200);
+}
+
+/* Responsive Overflows Prevention */
+@media (max-width: 768px) {
+  .stat-item:not(:last-child)::after {
+    display: none;
+  }
+}

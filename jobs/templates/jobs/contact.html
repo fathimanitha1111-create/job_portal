@@ -1,0 +1,145 @@
+{% extends 'jobs/base.html' %}
+{% load static %}
+
+{% block title %}Contact & Support | CareerConnect{% endblock %}
+
+{% block page_css %}
+  <link rel="stylesheet" href="{% static 'css/contact.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="contact-hero-pattern py-12 lg:py-16 border-b border-slate-200">
+  <div class="max-w-4xl mx-auto px-4 text-center">
+    <span class="badge-navy mb-2">Get in Touch</span>
+    <h1 class="text-3xl sm:text-4xl font-extrabold text-navy-900 tracking-tight mb-3">We're Here to Help You Succeed</h1>
+    <p class="text-sm sm:text-base text-slate-600 max-w-xl mx-auto">
+      Have a question about CareerConnect, need technical support with your job application, or exploring employer partnerships? Contact our team.
+    </p>
+  </div>
+</div>
+
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+    
+    <!-- CONTACT FORM (7 cols) -->
+    <div class="lg:col-span-7">
+      <div class="card-modern p-6 sm:p-10 shadow-lg">
+        <h2 class="text-lg font-bold text-navy-900 mb-2">Send Us a Direct Message</h2>
+        <p class="text-xs text-slate-500 mb-6">Our support engineers typically respond within 24 hours on business days.</p>
+
+        <form method="POST" class="space-y-4">
+          {% csrf_token %}
+
+          {% if form.errors %}
+            <div class="p-3 rounded-lg bg-rose-50 border border-rose-200 text-xs text-rose-700">
+              Please check the submitted fields.
+            </div>
+          {% endif %}
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold text-slate-600 mb-1">Your Name <span class="text-rose-500">*</span></label>
+              {{ form.name }}
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-600 mb-1">Your Email Address <span class="text-rose-500">*</span></label>
+              {{ form.email }}
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">Subject <span class="text-rose-500">*</span></label>
+            {{ form.subject }}
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">Message <span class="text-rose-500">*</span></label>
+            {{ form.message }}
+          </div>
+
+          <div class="pt-2">
+            <button type="submit" class="btn-primary w-full py-3 text-sm font-bold shadow-md">
+              Send Message
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- SUPPORT CHANNELS & FAQ (5 cols) -->
+    <div class="lg:col-span-5 space-y-6">
+      
+      <!-- Direct Info -->
+      <div class="card-modern p-6 space-y-4">
+        <h3 class="text-sm font-bold text-navy-900 pb-3 border-b border-slate-200 uppercase tracking-wider">
+          Direct Channels
+        </h3>
+        <ul class="space-y-3 text-xs text-slate-600">
+          <li class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg bg-navy-50 text-navy-800 flex items-center justify-center font-bold">@</div>
+            <div>
+              <span class="block text-slate-400 text-[11px]">Email Support</span>
+              <span class="font-bold text-navy-900">support@careerconnect.io</span>
+            </div>
+          </li>
+          <li class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg bg-navy-50 text-navy-800 flex items-center justify-center font-bold">#</div>
+            <div>
+              <span class="block text-slate-400 text-[11px]">Headquarters</span>
+              <span class="font-bold text-navy-900">San Francisco, CA &bull; Global Remote Team</span>
+            </div>
+          </li>
+          <li class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg bg-navy-50 text-navy-800 flex items-center justify-center font-bold">24</div>
+            <div>
+              <span class="block text-slate-400 text-[11px]">Availability</span>
+              <span class="font-bold text-navy-900">Monday - Friday &bull; 9:00 AM - 6:00 PM EST</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- FAQ Accordion -->
+      <div class="card-modern p-6">
+        <h3 class="text-sm font-bold text-navy-900 pb-3 border-b border-slate-200 mb-2 uppercase tracking-wider">
+          Frequently Asked Questions
+        </h3>
+
+        <div class="divide-y divide-slate-200">
+          <div class="faq-item">
+            <button type="button" class="faq-toggle w-full text-left py-3 text-xs font-bold text-navy-900 flex items-center justify-between">
+              <span>Is CareerConnect free for job candidates?</span>
+              <span class="faq-icon text-slate-400 transition-transform">&darr;</span>
+            </button>
+            <div class="hidden pb-3 text-xs text-slate-500 leading-relaxed">
+              Yes, CareerConnect is 100% free for job candidates. You can explore openings, upload resumes, and track unlimited applications at zero cost.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button type="button" class="faq-toggle w-full text-left py-3 text-xs font-bold text-navy-900 flex items-center justify-between">
+              <span>How do employers manage applicants?</span>
+              <span class="faq-icon text-slate-400 transition-transform">&darr;</span>
+            </button>
+            <div class="hidden pb-3 text-xs text-slate-500 leading-relaxed">
+              Employers have a dedicated hiring dashboard where they can review submitted candidate resumes, leave internal feedback notes, and update candidate statuses (Pending, Shortlisted, Accepted, Rejected).
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button type="button" class="faq-toggle w-full text-left py-3 text-xs font-bold text-navy-900 flex items-center justify-between">
+              <span>Can I apply to multiple roles?</span>
+              <span class="faq-icon text-slate-400 transition-transform">&darr;</span>
+            </button>
+            <div class="hidden pb-3 text-xs text-slate-500 leading-relaxed">
+              Yes! You can apply to any number of distinct job openings. The platform automatically prevents accidental duplicate submissions for the same job.
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,323 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}CareerConnect | Professional Job & Talent Portal{% endblock %}</title>
+  <meta name="description" content="{% block meta_description %}CareerConnect connects ambitious candidates with verified technology, design, finance, and corporate companies.{% endblock %}">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="{% static 'images/logo.png' %}">
+
+  <!-- Base Tailwind CSS Architecture -->
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+
+  <!-- Page-Specific CSS -->
+  {% block page_css %}{% endblock %}
+
+  <!-- Tailwind Play CDN for JIT styling & responsiveness -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy: {
+              50: '#f0f4f8',
+              100: '#d9e2ec',
+              200: '#bcccdc',
+              300: '#9fb3c8',
+              400: '#829ab1',
+              500: '#627d98',
+              600: '#486581',
+              700: '#243b53',
+              800: '#102a43',
+              900: '#0a192f',
+              950: '#060d17',
+            },
+            accent: {
+              50: '#ecfeff',
+              100: '#cffafe',
+              200: '#a5f3fc',
+              300: '#67e8f9',
+              400: '#22d3ee',
+              500: '#06b6d4',
+              600: '#0891b2',
+              700: '#0e7490',
+              800: '#155e75',
+              900: '#164e63',
+            },
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            heading: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+  <style>
+    .nav-link {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.5rem 0.875rem;
+      border-radius: 0.5rem;
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+      font-weight: 500;
+      color: #475569;
+      transition: all 0.15s ease;
+    }
+    .nav-link:hover {
+      color: #0a192f;
+      background-color: #f1f5f9;
+    }
+    .nav-link.active {
+      font-weight: 600;
+      color: #0a192f;
+      background-color: #f1f5f9;
+    }
+    .alert-toast {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      border-radius: 0.5rem;
+      animation: fadeIn 0.3s ease-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
+
+  <!-- TOP NAVIGATION BAR -->
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16 sm:h-20">
+        
+        <!-- Logo -->
+        <a href="{% url 'home' %}" class="flex items-center gap-3">
+          <img src="{% static 'images/logo.png' %}" alt="CareerConnect" class="h-9 sm:h-11 w-auto object-contain">
+        </a>
+
+        <!-- Desktop Navigation Links -->
+        <nav class="hidden md:flex items-center gap-1">
+          <a href="{% url 'home' %}" class="nav-link {% if request.resolver_match.url_name == 'home' %}active font-semibold text-navy-800 bg-slate-100{% endif %}">
+            Home
+          </a>
+          <a href="{% url 'all_jobs' %}" class="nav-link {% if request.resolver_match.url_name == 'all_jobs' %}active font-semibold text-navy-800 bg-slate-100{% endif %}">
+            All Jobs
+          </a>
+          <a href="{% url 'about' %}" class="nav-link {% if request.resolver_match.url_name == 'about' %}active font-semibold text-navy-800 bg-slate-100{% endif %}">
+            About Us
+          </a>
+          <a href="{% url 'contact' %}" class="nav-link {% if request.resolver_match.url_name == 'contact' %}active font-semibold text-navy-800 bg-slate-100{% endif %}">
+            Contact
+          </a>
+        </nav>
+
+        <!-- Desktop Right Controls -->
+        <div class="hidden md:flex items-center gap-3">
+          {% if user.is_authenticated %}
+            {% if user.is_employer %}
+              <a href="{% url 'post_job' %}" class="btn-accent text-xs uppercase tracking-wider py-2 px-4">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                Post a Job
+              </a>
+              <a href="{% url 'employer_dashboard' %}" class="btn-primary text-xs py-2 px-4">
+                Dashboard
+              </a>
+            {% else %}
+              <a href="{% url 'my_applications' %}" class="btn-secondary text-xs py-2 px-3">
+                My Applications
+              </a>
+              <a href="{% url 'candidate_dashboard' %}" class="btn-primary text-xs py-2 px-4">
+                My Profile
+              </a>
+            {% endif %}
+            
+            <a href="{% url 'logout' %}" class="btn-outline text-xs text-rose-600 hover:text-rose-700 hover:border-rose-300 py-2 px-3" title="Sign Out">
+              Sign Out
+            </a>
+          {% else %}
+            <!-- Candidate Login Link -->
+            <a href="{% url 'candidate_login' %}" class="btn-secondary text-xs py-2 px-3">
+              Candidate Login
+            </a>
+            
+            <!-- Employer Portal Link -->
+            <a href="{% url 'employer_login' %}" class="btn-primary text-xs py-2 px-4">
+              Employers / Post Job
+            </a>
+          {% endif %}
+        </div>
+
+        <!-- Mobile Hamburger Button -->
+        <div class="flex items-center md:hidden">
+          <button type="button" id="mobileMenuBtn" class="p-2 rounded-lg text-slate-600 hover:text-navy-900 hover:bg-slate-100 focus:outline-none" aria-label="Open mobile menu">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- MOBILE DRAWER & BACKDROP -->
+  <div id="mobileOverlay" class="fixed inset-0 bg-navy-950/60 z-50 backdrop-blur-sm hidden transition-opacity duration-300"></div>
+  <aside id="mobileDrawer" class="fixed top-0 left-0 bottom-0 w-72 bg-white z-50 p-6 shadow-2xl transform -translate-x-full transition-transform duration-300 ease-in-out flex flex-col justify-between">
+    <div>
+      <div class="flex items-center justify-between pb-5 border-b border-slate-200 mb-6">
+        <img src="{% static 'images/logo.png' %}" alt="CareerConnect" class="h-8 w-auto">
+        <button id="mobileMenuCloseBtn" class="text-slate-400 hover:text-slate-700 p-1" aria-label="Close menu">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+
+      <nav class="flex flex-col gap-2">
+        <a href="{% url 'home' %}" class="px-3 py-2.5 rounded-lg text-sm font-semibold text-slate-700 hover:bg-slate-100 hover:text-navy-900 {% if request.resolver_match.url_name == 'home' %}bg-slate-100 text-navy-900{% endif %}">
+          Home
+        </a>
+        <a href="{% url 'all_jobs' %}" class="px-3 py-2.5 rounded-lg text-sm font-semibold text-slate-700 hover:bg-slate-100 hover:text-navy-900 {% if request.resolver_match.url_name == 'all_jobs' %}bg-slate-100 text-navy-900{% endif %}">
+          All Jobs
+        </a>
+        <a href="{% url 'about' %}" class="px-3 py-2.5 rounded-lg text-sm font-semibold text-slate-700 hover:bg-slate-100 hover:text-navy-900 {% if request.resolver_match.url_name == 'about' %}bg-slate-100 text-navy-900{% endif %}">
+          About Us
+        </a>
+        <a href="{% url 'contact' %}" class="px-3 py-2.5 rounded-lg text-sm font-semibold text-slate-700 hover:bg-slate-100 hover:text-navy-900 {% if request.resolver_match.url_name == 'contact' %}bg-slate-100 text-navy-900{% endif %}">
+          Contact
+        </a>
+
+        {% if user.is_authenticated %}
+          <div class="pt-4 border-t border-slate-200 mt-2">
+            <div class="px-3 py-1 text-xs font-semibold text-slate-400 uppercase tracking-wider">Account</div>
+            {% if user.is_employer %}
+              <a href="{% url 'employer_dashboard' %}" class="block px-3 py-2 rounded-lg text-sm font-semibold text-navy-800 hover:bg-slate-100">Employer Dashboard</a>
+              <a href="{% url 'post_job' %}" class="block px-3 py-2 rounded-lg text-sm font-semibold text-accent-700 hover:bg-slate-100">Post a Job</a>
+            {% else %}
+              <a href="{% url 'candidate_dashboard' %}" class="block px-3 py-2 rounded-lg text-sm font-semibold text-navy-800 hover:bg-slate-100">Candidate Dashboard</a>
+              <a href="{% url 'my_applications' %}" class="block px-3 py-2 rounded-lg text-sm font-semibold text-slate-700 hover:bg-slate-100">My Applications</a>
+            {% endif %}
+          </div>
+        {% endif %}
+      </nav>
+    </div>
+
+    <!-- Mobile Auth Footer -->
+    <div class="pt-6 border-t border-slate-200">
+      {% if user.is_authenticated %}
+        <div class="mb-3 text-xs text-slate-500">
+          Signed in as <span class="font-bold text-navy-800">{{ user.username }}</span>
+        </div>
+        <a href="{% url 'logout' %}" class="btn-danger w-full text-center">
+          Sign Out
+        </a>
+      {% else %}
+        <div class="flex flex-col gap-2">
+          <a href="{% url 'candidate_login' %}" class="btn-secondary w-full text-center text-xs">
+            Candidate Login
+          </a>
+          <a href="{% url 'employer_login' %}" class="btn-primary w-full text-center text-xs">
+            Employer Login / Post Job
+          </a>
+        </div>
+      {% endif %}
+    </div>
+  </aside>
+
+  <!-- DJANGO NOTIFICATION MESSAGES -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4 w-full">
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert-dismissible alert-toast mb-3 shadow-sm border {% if message.tags == 'success' %}bg-emerald-50 text-emerald-800 border-emerald-200{% elif message.tags == 'error' or message.tags == 'danger' %}bg-rose-50 text-rose-800 border-rose-200{% elif message.tags == 'warning' %}bg-amber-50 text-amber-800 border-amber-200{% else %}bg-navy-50 text-navy-800 border-navy-200{% endif %}">
+          <div class="flex-1 text-sm font-medium">{{ message }}</div>
+          <button type="button" onclick="this.parentElement.remove()" class="text-slate-400 hover:text-slate-700 text-lg leading-none">&times;</button>
+        </div>
+      {% endfor %}
+    {% endif %}
+  </div>
+
+  <!-- MAIN VIEWPORT CONTENT -->
+  <main class="flex-1">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- SITE FOOTER -->
+  <footer class="bg-navy-950 text-slate-400 border-t border-navy-900 mt-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+        
+        <!-- Brand Info -->
+        <div>
+          <div class="flex items-center gap-3 mb-4">
+            <img src="{% static 'images/logo.png' %}" alt="CareerConnect" class="h-9 w-auto brightness-0 invert">
+          </div>
+          <p class="text-sm text-slate-400 leading-relaxed mb-4">
+            CareerConnect connects verified technology, design, and business leaders with exceptional candidates worldwide.
+          </p>
+          <div class="text-xs text-slate-500">
+            Python Django Backend &bull; SQLite Database &bull; Vite + Tailwind CSS Frontend
+          </div>
+        </div>
+
+        <!-- Candidates -->
+        <div>
+          <h4 class="text-white text-sm font-bold uppercase tracking-wider mb-4">For Candidates</h4>
+          <ul class="space-y-2.5 text-sm">
+            <li><a href="{% url 'all_jobs' %}" class="hover:text-white transition">Browse All Jobs</a></li>
+            <li><a href="{% url 'all_jobs' %}?remote=1" class="hover:text-white transition">Remote Opportunities</a></li>
+            <li><a href="{% url 'candidate_register' %}" class="hover:text-white transition">Candidate Sign Up</a></li>
+            <li><a href="{% url 'candidate_login' %}" class="hover:text-white transition">Candidate Sign In</a></li>
+            {% if user.is_authenticated and user.is_candidate %}
+              <li><a href="{% url 'my_applications' %}" class="hover:text-white transition">Track Applications</a></li>
+            {% endif %}
+          </ul>
+        </div>
+
+        <!-- Employers -->
+        <div>
+          <h4 class="text-white text-sm font-bold uppercase tracking-wider mb-4">For Employers</h4>
+          <ul class="space-y-2.5 text-sm">
+            <li><a href="{% url 'post_job' %}" class="hover:text-white transition">Post a Job Opening</a></li>
+            <li><a href="{% url 'employer_register' %}" class="hover:text-white transition">Employer Registration</a></li>
+            <li><a href="{% url 'employer_login' %}" class="hover:text-white transition">Employer Sign In</a></li>
+            {% if user.is_authenticated and user.is_employer %}
+              <li><a href="{% url 'employer_dashboard' %}" class="hover:text-white transition">Hiring Dashboard</a></li>
+            {% endif %}
+          </ul>
+        </div>
+
+        <!-- Company & Legal -->
+        <div>
+          <h4 class="text-white text-sm font-bold uppercase tracking-wider mb-4">CareerConnect</h4>
+          <ul class="space-y-2.5 text-sm">
+            <li><a href="{% url 'about' %}" class="hover:text-white transition">About Our Platform</a></li>
+            <li><a href="{% url 'contact' %}" class="hover:text-white transition">Contact & Help</a></li>
+            <li><a href="/admin/" target="_blank" class="hover:text-white transition">Django Admin</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="pt-8 border-t border-navy-900 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
+        <div>
+          &copy; {% now "Y" %} CareerConnect Inc. All rights reserved. Built with Python Django & Tailwind CSS.
+        </div>
+        <div class="flex gap-6">
+          <a href="{% url 'about' %}" class="hover:text-slate-400">Privacy Policy</a>
+          <a href="{% url 'about' %}" class="hover:text-slate-400">Terms of Service</a>
+          <a href="{% url 'contact' %}" class="hover:text-slate-400">Support</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- CareerConnect Client JavaScript -->
+  <script src="{% static 'js/main.js' %}"></script>
+  {% block page_js %}{% endblock %}
+</body>
+</html>

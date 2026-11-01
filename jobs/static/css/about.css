@@ -1,0 +1,14 @@
+/* About Us Page Stylesheet */
+.about-hero-pattern {
+  background: radial-gradient(circle at 80% 20%, rgba(6, 182, 212, 0.08) 0%, transparent 40%),
+              radial-gradient(circle at 20% 80%, rgba(16, 42, 67, 0.05) 0%, transparent 40%),
+              #ffffff;
+}
+
+.team-card {
+  transition: all 0.25s ease;
+}
+
+.team-card:hover {
+  transform: translateY(-4px);
+}
